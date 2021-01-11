@@ -72,6 +72,10 @@ f.advanced(title:Messages.Host_Details()) {
         f.checkbox()
     }
 
+    f.entry(title: Messages.Host_CopySSHEnv(), field:'copySSHEnv') {
+        f.checkbox()
+    }
+
     f.entry(title: _(Messages.EnvVar_Title())) {
         f.repeatableHeteroProperty(
                 field:'envVars',

@@ -150,6 +150,20 @@ class SSHCommand {
             SSHGlobalConnectionConfiguration connectionConfig = new SSHGlobalConnectionConfiguration(credentialsId: macHost.credentialsId, port: macHost.port,
                     context: Jenkins.get(), host: macHost.host, connectionTimeout: macHost.connectionTimeout,
                     readTimeout: macHost.readTimeout, kexTimeout: macHost.kexTimeout, macHostKeyVerifier: macHost.macHostKeyVerifier)
+            LOGGER.log(Level.FINE, SSHCommandLauncher.executeCommand(connectionConfig, true, MessageFormat.format(Constants.COPY_SSH_ENVIRONMENT_FILE, user.username)))
+        } catch(Exception e) {
+            final String message = String.format(SSHCommandException.COPY_SSH_ENVIRONMENT_FILE_ERROR_MESSAGE, macHost.host)
+            LOGGER.log(Level.SEVERE, message, e)
+            throw new SSHCommandException(message, e)
+        }
+    }
+
+    @Restricted(NoExternalUse)
+    static boolean copySSHEnvironment(MacHost macHost, MacUser user) throws SSHCommandException, Exception {
+        try {
+            SSHGlobalConnectionConfiguration connectionConfig = new SSHGlobalConnectionConfiguration(credentialsId: macHost.credentialsId, port: macHost.port,
+                    context: Jenkins.get(), host: macHost.host, connectionTimeout: macHost.connectionTimeout,
+                    readTimeout: macHost.readTimeout, kexTimeout: macHost.kexTimeout, macHostKeyVerifier: macHost.macHostKeyVerifier)
             LOGGER.log(Level.FINE, SSHCommandLauncher.executeCommand(connectionConfig, true, MessageFormat.format(Constants.COPY_SSH_ENVIRONMENT, user.username)))
         } catch(Exception e) {
             final String message = String.format(SSHCommandException.COPY_SSH_ENVIRONMENT_ERROR_MESSAGE, macHost.host)

@@ -23,7 +23,10 @@ class SSHCommandException extends Exception {
     public static final String TRANSFERT_KEYCHAIN_ERROR_MESSAGE = "Cannot transfert keychain file on mac %s : %s"
 
     /** Cannot copy ~/.ssh/environment file on host %s */
-    public static final String COPY_SSH_ENVIRONMENT_ERROR_MESSAGE = "Cannot copy ~/.ssh/environment file on host %s"
+    public static final String COPY_SSH_ENVIRONMENT_FILE_ERROR_MESSAGE = "Cannot copy ~/.ssh/environment file on host %s"
+
+    /** Cannot copy ~/.ssh/ directory on host %s */
+    public static final String COPY_SSH_ENVIRONMENT_ERROR_MESSAGE = "Cannot copy ~/.ssh/ directory on host %s"
 
     /**
      * Constructor with message and cause

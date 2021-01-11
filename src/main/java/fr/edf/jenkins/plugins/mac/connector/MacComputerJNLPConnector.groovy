@@ -90,6 +90,9 @@ class MacComputerJNLPConnector extends MacComputerConnector {
                 if (host.copySSHEnvFile) {
                     SSHCommand.copySSHEnvironmentVarsFile(host, user)
                 }
+                if (host.copySSHEnv) {
+                    SSHCommand.copySSHEnvironment(host, user)
+                }
                 SSHCommand.jnlpConnect(host, user, jenkinsUrl, computer.getJnlpMac())
             }catch(Exception e) {
                 launched = false
