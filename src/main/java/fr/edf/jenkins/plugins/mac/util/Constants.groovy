@@ -58,8 +58,14 @@ class Constants {
     /** sudo mkdir -p /Users/{0}/.ssh && sudo cp ~/.ssh/environment /Users/{0}/.ssh/environment && sudo chown {0} /Users/{0}/.ssh/environment */
     public static final String COPY_SSH_ENVIRONMENT_FILE = "sudo mkdir -p /Users/{0}/.ssh && sudo cp ~/.ssh/environment /Users/{0}/.ssh/environment && sudo chown {0} /Users/{0}/.ssh/environment"
 
-    /** sudo mkdir -p /Users/{0}/.ssh && sudo cp ~/.ssh/* /Users/{0}/.ssh/ && sudo chown {0} /Users/{0}/.ssh/* */
-    public static final String COPY_SSH_ENVIRONMENT = "sudo mkdir -p /Users/{0}/.ssh && sudo cp ~/.ssh/* /Users/{0}/.ssh/ && sudo chown {0} /Users/{0}/.ssh/*"
+    /** sudo mkdir -p /Users/{0}/.ssh && sudo cp ~/.ssh/* /Users/{0}/.ssh/ && sudo chown -R {0} /Users/{0}/.ssh && sudo chmod -R 0700 /Users/{0}/.ssh/ && sudo chmod -R 0600 /Users/{0}/.ssh/* */
+    public static final String COPY_SSH_ENVIRONMENT = """
+        sudo mkdir -p /Users/{0}/.ssh &&
+        sudo cp ~/.ssh/* /Users/{0}/.ssh/ &&
+        sudo chown -R {0} /Users/{0}/.ssh &&
+        sudo chmod -R 0700 /Users/{0}/.ssh/ &&
+        sudo chmod -R 0600 /Users/{0}/.ssh/*
+    """
 
     //regex
     public static final String REGEX_NEW_LINE = "\\r?\\n|\\r"
