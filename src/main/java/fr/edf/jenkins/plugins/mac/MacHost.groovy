@@ -40,15 +40,18 @@ class MacHost implements Describable<MacHost> {
     Boolean copySSHEnvFile
     Boolean copySSHEnv
     Boolean uploadKeychain = Boolean.FALSE
+    Boolean uploadNetRC = Boolean.FALSE
     String labelString
     String fileCredentialsId
+    String netRCFileCredentialsId
     List<MacEnvVar> envVars = new ArrayList()
     MacHostKeyVerifier macHostKeyVerifier
     transient Set<LabelAtom> labelSet
 
     @DataBoundConstructor
-    MacHost(String host, String credentialsId, Integer port, Integer maxUsers, Integer connectionTimeout, Integer readTimeout, Integer agentConnectionTimeout,
-            Boolean disabled, Integer maxTries, String labelString, Boolean uploadKeychain, String fileCredentialsId, List<MacEnvVar> envVars, String key,
+    MacHost(String host, String credentialsId, Integer port, Integer maxUsers, Integer connectionTimeout, Integer readTimeout, 
+            Integer agentConnectionTimeout, Boolean disabled, Integer maxTries, String labelString, Boolean uploadKeychain, 
+            String fileCredentialsId, Boolean uploadNetRC, String netRCFileCredentialsId, List<MacEnvVar> envVars, String key,
             Boolean copySSHEnvFile, Boolean copySSHEnv) {
         this.host = host
         this.credentialsId = credentialsId
@@ -63,10 +66,12 @@ class MacHost implements Describable<MacHost> {
         this.labelString = labelString
         this.envVars = envVars
         this.uploadKeychain = uploadKeychain ?: Boolean.FALSE
+        this.uploadNetRC = uploadNetRC ?: Boolean.FALSE
         this.fileCredentialsId = fileCredentialsId
         this.macHostKeyVerifier = new MacHostKeyVerifier(key)
         this.copySSHEnvFile = copySSHEnvFile
         this.copySSHEnv = copySSHEnv
+        this.netRCFileCredentialsId = netRCFileCredentialsId
         labelSet = Label.parse(StringUtils.defaultIfEmpty(labelString, ""))
     }
     
@@ -135,13 +140,33 @@ class MacHost implements Describable<MacHost> {
     }
 
     @DataBoundSetter
-    void setUploadKeychain(Boolean uploadKeychain= Boolean.FALSE) {
+    void setCopySSHEnvFile(Boolean copySSHEnvFile) {
+        this.copySSHEnvFile = copySSHEnvFile
+    }
+
+    @DataBoundSetter
+    void setCopySSHEnv(Boolean copySSHEnv) {
+        this.copySSHEnv = copySSHEnv
+    }
+
+    @DataBoundSetter
+    void setUploadKeychain(Boolean uploadKeychain = Boolean.FALSE) {
         this.uploadKeychain = uploadKeychain
     }
 
     @DataBoundSetter
     void setFileCredentialsId(String fileCredentialsId) {
         this.fileCredentialsId = fileCredentialsId
+    }
+
+    @DataBoundSetter
+    void setUploadNetRC(Boolean uploadNetRC = Boolean.FALSE) {
+        this.uploadNetRC = uploadNetRC
+    }
+
+    @DataBoundSetter
+    void setNetRCFileCredentialsId(String netRCFileCredentialsId) {
+        this.netRCFileCredentialsId = netRCFileCredentialsId
     }
 
     @Override
@@ -206,6 +231,17 @@ class MacHost implements Describable<MacHost> {
         @POST
         ListBoxModel doFillFileCredentialsIdItems(@QueryParameter String fileCredentialsId, @AncestorInPath Item ancestor) {
             return FormUtils.newFileCredentialsItemsListBoxModel(fileCredentialsId, ancestor)
+        }
+
+        /**
+         * Return ListBoxModel of existing files
+         * @param credentialsId
+         * @param context
+         * @return ListBoxModel
+         */
+        @POST
+        ListBoxModel doFillNetRCFileCredentialsIdItems(@QueryParameter String netRCFileCredentialsId, @AncestorInPath Item ancestor) {
+            return FormUtils.newFileCredentialsItemsListBoxModel(netRCFileCredentialsId, ancestor)
         }
 
         /**

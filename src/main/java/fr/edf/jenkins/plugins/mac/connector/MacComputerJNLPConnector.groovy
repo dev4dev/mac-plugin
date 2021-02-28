@@ -83,9 +83,13 @@ class MacComputerJNLPConnector extends MacComputerConnector {
             MacComputer macComputer = (MacComputer) computer
             try {
                 SSHCommand.createUserOnMac(host, user)
-                if(host.uploadKeychain && host.fileCredentialsId != null) {
+                if (host.uploadKeychain && host.fileCredentialsId != null) {
                     FileCredentials fileCredentials = CredentialsUtils.findFileCredentials(host.fileCredentialsId, Jenkins.get())
                     SSHCommand.uploadKeychain(host, user, fileCredentials)
+                }
+                if (host.uploadNetRC && host.netRCFileCredentialsId != null) {
+                    FileCredentials fileCredentials = CredentialsUtils.findFileCredentials(host.netRCFileCredentialsId, Jenkins.get())
+                    SSHCommand.uploadNetRC(host, user, fileCredentials)
                 }
                 if (host.copySSHEnvFile) {
                     SSHCommand.copySSHEnvironmentVarsFile(host, user)

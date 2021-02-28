@@ -144,6 +144,28 @@ class SSHCommand {
         }
     }
 
+    /**
+     * Upload .netrc file on the slave
+     * @param macHost
+     * @param user
+     * @return true if file uploaded
+     * @throws SSHCommandException, Exception
+     */
+    @Restricted(NoExternalUse)
+    static boolean uploadNetRC(MacHost host, MacUser user, FileCredentials netRCFile) throws SSHCommandException, Exception {
+        try {
+            SSHUserConnectionConfiguration connectionConfig = new SSHUserConnectionConfiguration(username: user.username, password: user.password, host: host.host,
+            port: host.port, connectionTimeout: host.connectionTimeout, readTimeout: host.readTimeout, kexTimeout: host.kexTimeout, macHostKeyVerifier: host.macHostKeyVerifier)
+            String outputDir = String.format(Constants.NETRC_DESTINATION_FOLDER, user.username)
+            SSHCommandLauncher.sendFile(connectionConfig, netRCFile.content, Constants.NETRC_NAME, outputDir)
+            return true
+        } catch(Exception e) {
+            final String message = String.format(SSHCommandException.TRANSFERT_NETRC_ERROR_MESSAGE, host.host, e.getMessage())
+            LOGGER.log(Level.SEVERE, message, e)
+            throw new SSHCommandException(message, e)
+        }
+    }
+
     @Restricted(NoExternalUse)
     static boolean copySSHEnvironmentVarsFile(MacHost macHost, MacUser user) throws SSHCommandException, Exception {
         try {

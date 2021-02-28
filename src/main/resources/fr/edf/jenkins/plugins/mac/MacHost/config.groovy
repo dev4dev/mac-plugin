@@ -68,6 +68,13 @@ f.advanced(title:Messages.Host_Details()) {
         }
     }
 
+    f.optionalBlock(title: _(Messages.NetRC_Title()), field: 'uploadNetRC',
+    checked: null != instance ? instance.uploadNetRC : false, inline: 'true') {
+        f.entry(title:_(Messages.NetRC_DisplayName()), field:"netRCFileCredentialsId") {
+            c.select(context: app, includeUser: false, expressionAllowed: false)
+        }
+    }
+
     f.entry(title: Messages.Host_CopySSHEnvFile(), field:'copySSHEnvFile') {
         f.checkbox()
     }
